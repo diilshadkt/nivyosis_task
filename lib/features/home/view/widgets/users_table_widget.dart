@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nivyosis_task/features/home/controller/user_controller.dart';
+import 'package:nivyosis_task/features/home/model/get_user_model.dart';
 
-class UsersTableWidget extends StatelessWidget {
+class UsersTableWidget extends ConsumerWidget {
   const UsersTableWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.only(left: MediaQuery.sizeOf(context).width / 12),
       child: Column(
@@ -24,24 +27,52 @@ class UsersTableWidget extends StatelessWidget {
           ),
           SizedBox(
             height: MediaQuery.sizeOf(context).height,
-            child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "User 1",
+            child: FutureBuilder<List<GetUserModel>>(
+              future: ref.watch(userControllerProvider.notifier).getUser(),
+              builder: (context, snapshot) {
+                final userDatas = snapshot.data;
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red, fontSize: 16),
                     ),
-                    Text("user1@gmail.com"),
-                    Row(
+                  );
+                }
+
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text("No user datas."),
+                  );
+                }
+
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: userDatas!.length,
+                  itemBuilder: (context, index) {
+                    final userData = userDatas[index];
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        IconButton(
-                            onPressed: () {}, icon: Icon(Icons.visibility)),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+                        Text(
+                          userData.name,
+                        ),
+                        Text(userData.email),
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {}, icon: Icon(Icons.visibility)),
+                            IconButton(
+                                onPressed: () {}, icon: Icon(Icons.delete))
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    );
+                  },
                 );
               },
             ),
@@ -51,52 +82,3 @@ class UsersTableWidget extends StatelessWidget {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// class UserTable extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: SingleChildScrollView(
-//         scrollDirection: Axis.horizontal,
-//         child: DataTable(
-//           columns: [
-//             DataColumn(label: Text('Name')),
-//             DataColumn(label: Text('Email')),
-//             DataColumn(label: Text('Action')),
-//           ],
-//           rows: [
-//             _buildRow('User 1', 'user1@gmail.com'),
-//             _buildRow('User 2', 'user2@gmail.com'),
-//             _buildRow('User 3', 'user2@gmail.com'),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   DataRow _buildRow(String name, String email) {
-//     return DataRow(cells: [
-//       DataCell(Text(name)),
-//       DataCell(Text(email)),
-//       DataCell(Row(
-//         children: [
-//           IconButton(
-//             icon: Icon(Icons.remove_red_eye, color: Colors.blue),
-//             onPressed: () {
-//               // Add action for "view" button
-//             },
-//           ),
-//           IconButton(
-//             icon: Icon(Icons.delete, color: Colors.red),
-//             onPressed: () {
-//               // Add action for "delete" button
-//             },
-//           ),
-//         ],
-//       )),
-//     ]);
-//   }
-// }

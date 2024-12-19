@@ -1,39 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nivyosis_task/core/widgets/appbar_widget.dart';
+import 'package:nivyosis_task/features/home/view/pages/add_user_page.dart';
 import 'package:nivyosis_task/features/home/view/widgets/users_table_widget.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
+  static const routePath = "/home";
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-                width: MediaQuery.sizeOf(context).width,
-                height: MediaQuery.sizeOf(context).height / 6,
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 1, 0, 52),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30))),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.sizeOf(context).height / 9,
-                    ),
-                    Text(
-                      "Welcome",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ],
-                )),
+            AppbarWidget(title: "Welcome"),
             SizedBox(
               height: MediaQuery.sizeOf(context).height / 26,
             ),
@@ -45,7 +28,9 @@ class HomePage extends StatelessWidget {
                   width: MediaQuery.sizeOf(context).width / 3,
                   height: MediaQuery.sizeOf(context).height / 30,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(AddUserPage.routePath);
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 1, 0, 52),
                           shape: ContinuousRectangleBorder(
