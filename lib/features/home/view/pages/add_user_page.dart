@@ -44,7 +44,6 @@ class AddUserPage extends HookWidget {
           description: descriptionController.text,
         ).toJson();
         await UserService.createUser(requestBody);
-        SnackBarUtils.showMessage('Product added successfully!');
 
         nameController.clear();
         phoneController.clear();
@@ -52,7 +51,7 @@ class AddUserPage extends HookWidget {
         addressController.clear();
         genderController.clear();
         descriptionController.clear();
-        MyApp.navigatorKey.currentContext!.pop(context);
+        MyApp.navigatorKey.currentContext!.pop();
       } catch (e) {
         SnackBarUtils.showMessage('Failed to add User: $e');
       }

@@ -31,9 +31,16 @@ class UsersTableWidget extends ConsumerWidget {
             children: [
               Text(
                 "Name",
+                style: TextStyle(fontWeight: FontWeight.w600),
               ),
-              Text("Email"),
-              Text("Action"),
+              Text(
+                "Email",
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              Text(
+                "Action",
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ],
           ),
           Divider(
@@ -85,7 +92,12 @@ class UsersTableWidget extends ConsumerWidget {
                                       context: context,
                                       builder: (context) => AlertDialog(
                                         content: Text(
-                                            "Are you sure you want to delete this item?"),
+                                          "Are you sure you want to delete this item?",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w800),
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {

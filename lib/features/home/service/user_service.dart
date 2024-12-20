@@ -29,21 +29,17 @@ class UserService {
         data: userData,
       );
 
-      if (response.statusCode == 200) {
-        final responseCode = response.data['response_code'];
-
-        if (responseCode == 201) {
-          SnackBarUtils.showMessage('User created successfully!');
-        } else if (responseCode == 400) {
+      if (response.statusCode == 201) {
+        final responseCode = response.data;
+        SnackBarUtils.showMessage('User added Successfully');
+        if (responseCode == 400) {
           SnackBarUtils.showMessage('User already exists!');
-        } else {
-          SnackBarUtils.showMessage('Unexpected error occurred.');
-        }
+        } 
       } else {
         throw Exception('Failed to create user');
       }
     } catch (e) {
-      SnackBarUtils.showMessage(' failed');
+      SnackBarUtils.showMessage('failed');
     }
   }
 
