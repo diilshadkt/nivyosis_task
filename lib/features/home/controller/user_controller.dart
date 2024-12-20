@@ -22,11 +22,11 @@ class UserController extends _$UserController {
     }
   }
 
-  Future<void> creatUser(Map<String, dynamic> userData) async {
-    try {
-      await UserService.createUser(userData);
-    } catch (e) {
-      SnackBarUtils.showMessage('Uploading failed');
-    }
-  }
+  // Future<void> creatUser(Map<String, dynamic> userData) async {
+  //   try {
+  //     await UserService.createUser(userData);
+  //   } catch (e) {
+  //     SnackBarUtils.showMessage('Uploading failed');
+  //   }
+  // }
 }

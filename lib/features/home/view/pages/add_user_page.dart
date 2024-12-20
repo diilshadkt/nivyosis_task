@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nivyosis_task/core/utils/snackbar_utils.dart';
 import 'package:nivyosis_task/core/widgets/appbar_widget.dart';
+import 'package:nivyosis_task/features/home/model/get_user_model.dart';
+import 'package:nivyosis_task/features/home/service/user_service.dart';
 import 'package:nivyosis_task/features/home/view/widgets/textfield_widget.dart';
+import 'package:nivyosis_task/main.dart';
 
-class AddUserPage extends StatelessWidget {
+class AddUserPage extends HookWidget {
   static const routePath = "/add";
   const AddUserPage({super.key});
 
@@ -14,6 +19,41 @@ class AddUserPage extends StatelessWidget {
     final emailController = useTextEditingController();
     final addressController = useTextEditingController();
     final descriptionController = useTextEditingController();
+
+    Future<void> addUser() async {
+      if (nameController.text.isEmpty ||
+          phoneController.text.isEmpty ||
+          emailController.text.isEmpty ||
+          addressController.text.isEmpty ||
+          descriptionController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("All fields are required."),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+      try {
+        final requestBody = GetUserModel(
+          name: nameController.text,
+          phone: phoneController.text,
+          email: emailController.text,
+          address: addressController.text,
+          description: descriptionController.text,
+        ).toJson();
+        await UserService.createUser(requestBody);
+        SnackBarUtils.showMessage('Product added successfully!');
+
+        nameController.clear();
+        phoneController.clear();
+        emailController.clear();
+        addressController.clear();
+        descriptionController.clear();
+        MyApp.navigatorKey.currentContext!.pop(context);
+      } catch (e) {
+        SnackBarUtils.showMessage('Failed to add User: $e');
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -28,23 +68,38 @@ class AddUserPage extends StatelessWidget {
                   horizontal: MediaQuery.sizeOf(context).width / 12),
               child: Column(
                 children: [
-                  TextfieldWidget(title: "Name",controller: nameController,),
+                  TextfieldWidget(
+                    title: "Name",
+                    controller: nameController,
+                  ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height / 50,
                   ),
-                  TextfieldWidget(title: "Phone",controller: phoneController,),
+                  TextfieldWidget(
+                    title: "Phone",
+                    controller: phoneController,
+                  ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height / 50,
                   ),
-                  TextfieldWidget(title: "Email",controller: emailController,),
+                  TextfieldWidget(
+                    title: "Email",
+                    controller: emailController,
+                  ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height / 50,
                   ),
-                  TextfieldWidget(title: "Address",controller: addressController,),
+                  TextfieldWidget(
+                    title: "Address",
+                    controller: addressController,
+                  ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height / 50,
                   ),
-                  TextfieldWidget(title: "Description",controller: descriptionController,),
+                  TextfieldWidget(
+                    title: "Description",
+                    controller: descriptionController,
+                  ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height / 20,
                   ),
@@ -53,7 +108,7 @@ class AddUserPage extends StatelessWidget {
                       width: MediaQuery.sizeOf(context).width / 3,
                       height: MediaQuery.sizeOf(context).height / 30,
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: addUser,
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   const Color.fromARGB(255, 1, 0, 52),
