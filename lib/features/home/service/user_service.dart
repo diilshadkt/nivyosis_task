@@ -22,8 +22,7 @@ class UserService {
     }
   }
 
-  static Future<void> createUser(
-      Map<String, dynamic> userData) async {
+  static Future<void> createUser(Map<String, dynamic> userData) async {
     try {
       final response = await _dio.post(
         'https://ceikerala.niveosys.org/api-project/public/api/create-user',
@@ -45,6 +44,27 @@ class UserService {
       }
     } catch (e) {
       SnackBarUtils.showMessage(' failed');
+    }
+  }
+
+  static Future<void> deleteUser(String id) async {
+    try {
+      final response = await _dio.delete(
+          'https://ceikerala.niveosys.org/api-project/public/api/delete-user/$id');
+
+      if (response.statusCode == 200) {
+        final responseCode = response.data['response_code'];
+
+        if (responseCode == 204) {
+          SnackBarUtils.showMessage('User deleted successfully');
+        } else {
+          SnackBarUtils.showMessage('Unexpected error occurred.');
+        }
+      } else {
+        throw Exception('Failed to delete User');
+      }
+    } catch (e) {
+      SnackBarUtils.showMessage('Failed to delete: $e');
     }
   }
 }
