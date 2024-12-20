@@ -49,17 +49,11 @@ class UserService {
 
   static Future<void> deleteUser(String id) async {
     try {
-      final response = await _dio.delete(
+      final response = await _dio.post(
           'https://ceikerala.niveosys.org/api-project/public/api/delete-user/$id');
 
       if (response.statusCode == 200) {
-        final responseCode = response.data['response_code'];
-
-        if (responseCode == 204) {
-          SnackBarUtils.showMessage('User deleted successfully');
-        } else {
-          SnackBarUtils.showMessage('Unexpected error occurred.');
-        }
+        SnackBarUtils.showMessage("User deleted successfully");
       } else {
         throw Exception('Failed to delete User');
       }

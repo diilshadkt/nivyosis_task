@@ -26,7 +26,7 @@ class TextfieldWidget extends StatelessWidget {
           ],
         ),
         Container(
-          height: MediaQuery.sizeOf(context).height / 15,
+          height: MediaQuery.sizeOf(context).height / 18,
           decoration: BoxDecoration(
               color: const Color.fromARGB(255, 205, 202, 202),
               borderRadius: BorderRadius.circular(8)),

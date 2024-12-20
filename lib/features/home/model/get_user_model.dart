@@ -18,7 +18,7 @@ class GetUserModel with _$GetUserModel {
     @JsonKey(name: "phone") required String phone,
     @JsonKey(name: "email") required String email,
     @JsonKey(name: "address") required String address,
-    @JsonKey(name: "gender") String? gender,
+    @JsonKey(name: "gender") required String gender,
     @JsonKey(name: "description") required String description,
     @JsonKey(name: "created_at") DateTime? createdAt,
     @JsonKey(name: "updated_at") DateTime? updatedAt,

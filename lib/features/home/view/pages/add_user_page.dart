@@ -18,6 +18,7 @@ class AddUserPage extends HookWidget {
     final phoneController = useTextEditingController();
     final emailController = useTextEditingController();
     final addressController = useTextEditingController();
+    final genderController = useTextEditingController();
     final descriptionController = useTextEditingController();
 
     Future<void> addUser() async {
@@ -25,6 +26,7 @@ class AddUserPage extends HookWidget {
           phoneController.text.isEmpty ||
           emailController.text.isEmpty ||
           addressController.text.isEmpty ||
+          genderController.text.isEmpty ||
           descriptionController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("All fields are required."),
@@ -38,6 +40,7 @@ class AddUserPage extends HookWidget {
           phone: phoneController.text,
           email: emailController.text,
           address: addressController.text,
+          gender: genderController.text,
           description: descriptionController.text,
         ).toJson();
         await UserService.createUser(requestBody);
@@ -47,6 +50,7 @@ class AddUserPage extends HookWidget {
         phoneController.clear();
         emailController.clear();
         addressController.clear();
+        genderController.clear();
         descriptionController.clear();
         MyApp.navigatorKey.currentContext!.pop(context);
       } catch (e) {
@@ -92,6 +96,13 @@ class AddUserPage extends HookWidget {
                   TextfieldWidget(
                     title: "Address",
                     controller: addressController,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height / 50,
+                  ),
+                  TextfieldWidget(
+                    title: "Gender",
+                    controller: genderController,
                   ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height / 50,

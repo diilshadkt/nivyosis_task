@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nivyosis_task/core/utils/snackbar_utils.dart';
 import 'package:nivyosis_task/features/home/controller/user_controller.dart';
 import 'package:nivyosis_task/features/home/model/get_user_model.dart';
+import 'package:nivyosis_task/features/home/service/user_service.dart';
+import 'package:nivyosis_task/main.dart';
 
 class UsersTableWidget extends ConsumerWidget {
-  
-  const UsersTableWidget({super.key,});
-
+  static const routePath = "userTable";
+  const UsersTableWidget({super.key, this.userModel});
+  final GetUserModel? userModel;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void showDeleteDialog(
-      BuildContext context,
-    ) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: const Text("Are you sure you want to delete this item?"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  context.pop();
-                },
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () async {
-                  // Navigator.of(context).pop();
-                  // await _deleteProduct(context, id, dataBox);
-                },
-                child: const Text("Delete"),
-              ),
-            ],
-          );
-        },
-      );
+    Future<void> deleteUser(BuildContext context, int id) async {
+      try {
+        await UserService.deleteUser(id.toString());
+      } catch (e) {
+        SnackBarUtils.showMessage('Failed to delete User: $e');
+      }
     }
 
     return Padding(
@@ -97,7 +81,28 @@ class UsersTableWidget extends ConsumerWidget {
                             IconButton(
                                 onPressed: () {}, icon: Icon(Icons.visibility)),
                             IconButton(
-                                onPressed: () => showDeleteDialog(context),
+                                onPressed: () => showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        content: Text(
+                                            "Are you sure you want to delete this item?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                await deleteUser(
+                                                    context, userData.id!);
+                                              },
+                                              child: Text("Delete"))
+                                        ],
+                                      ),
+                                    ),
                                 icon: Icon(Icons.delete))
                           ],
                         )
@@ -113,3 +118,41 @@ class UsersTableWidget extends ConsumerWidget {
     );
   }
 }
+   
+
+
+
+
+
+
+
+
+
+
+
+
+   // void showDeleteDialog(BuildContext context, int id) {
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         content: const Text("Are you sure you want to delete this item?"),
+    //         actions: [
+    //           TextButton(
+    //             onPressed: () {
+    //               context.pop();
+    //             },
+    //             child: const Text("Cancel"),
+    //           ),
+    //           TextButton(
+    //             onPressed: () async {
+    //               Navigator.of(context).pop();
+    //               await deleteUser(context, id);
+    //             },
+    //             child: const Text("Delete"),
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
