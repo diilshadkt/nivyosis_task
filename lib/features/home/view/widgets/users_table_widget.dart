@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nivyosis_task/core/utils/snackbar_utils.dart';
 import 'package:nivyosis_task/features/home/controller/user_controller.dart';
 import 'package:nivyosis_task/features/home/model/get_user_model.dart';
 import 'package:nivyosis_task/features/home/service/user_service.dart';
-import 'package:nivyosis_task/main.dart';
+
 
 class UsersTableWidget extends ConsumerWidget {
   static const routePath = "userTable";
@@ -143,28 +142,4 @@ class UsersTableWidget extends ConsumerWidget {
 
 
 
-   // void showDeleteDialog(BuildContext context, int id) {
-    //   showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         content: const Text("Are you sure you want to delete this item?"),
-    //         actions: [
-    //           TextButton(
-    //             onPressed: () {
-    //               context.pop();
-    //             },
-    //             child: const Text("Cancel"),
-    //           ),
-    //           TextButton(
-    //             onPressed: () async {
-    //               Navigator.of(context).pop();
-    //               await deleteUser(context, id);
-    //             },
-    //             child: const Text("Delete"),
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
-    // }
+   
